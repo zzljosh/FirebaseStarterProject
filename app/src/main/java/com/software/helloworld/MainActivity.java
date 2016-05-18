@@ -9,11 +9,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import com.firebase.client.Firebase;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -30,14 +33,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void submit(View button) {
 
+        Firebase myFirebaseRef = new Firebase("https://zhili-110.firebaseio.com/student");
         EditText etName = (EditText) findViewById(R.id.EditTextName);
         EditText etId = (EditText) findViewById(R.id.EditTextId);
+
         String name = etName.getText().toString();
         String id = etId.getText().toString();
 
         Student student = new Student();
         student.setName(name);
         student.setStudentId(id);
+        myFirebaseRef.child(student.getStudentId()).setValue(student);
 
         Intent output = new Intent();
         setResult(RESULT_OK, output);
